@@ -18,8 +18,6 @@ class RepoViewController: UIViewController {
     @IBOutlet weak var issuesLabel: UILabel!
     @IBOutlet weak var prLabel: UILabel!
     
-    
-    
     var repo: RepoObject!
     var branchFeed = BranchesViewModel()
     var contributorsFeed = ContributorsViewModel()
@@ -34,7 +32,6 @@ class RepoViewController: UIViewController {
         getIssues()
         getPullRequests()
         getContributors()
-
     }
     
     @IBAction func issuesButtonPressed(_ sender: UIButton) {
@@ -54,7 +51,6 @@ class RepoViewController: UIViewController {
         vc.issueURL = repo.issueURL
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     func getBranches() {
         branchFeed.branchRequest(repo.branchesURL) { (success, total, error) in

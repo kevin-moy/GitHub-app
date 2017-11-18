@@ -52,7 +52,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lew-Gp-J6D">
-                                                    <rect key="frame" x="34" y="29.5" width="42" height="21"/>
+                                                    <rect key="frame" x="20" y="29.5" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -60,8 +60,8 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="lew-Gp-J6D" firstAttribute="centerY" secondItem="vVN-WP-d55" secondAttribute="centerY" id="7Zz-1q-kVE"/>
-                                                <constraint firstItem="lew-Gp-J6D" firstAttribute="leading" secondItem="vVN-WP-d55" secondAttribute="leading" constant="34" id="ZYc-Ja-70x"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lew-Gp-J6D" secondAttribute="trailing" id="ZuT-aV-FfV"/>
+                                                <constraint firstItem="lew-Gp-J6D" firstAttribute="leading" secondItem="vVN-WP-d55" secondAttribute="leading" constant="20" id="ZYc-Ja-70x"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lew-Gp-J6D" secondAttribute="trailing" constant="20" symbolic="YES" id="kmS-pf-93O"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -301,8 +301,8 @@
                                 </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13l-MI-Hgx">
-                                <rect key="frame" x="164" y="572" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="163" y="572" width="49" height="30"/>
+                                <state key="normal" title="Submit"/>
                                 <connections>
                                     <action selector="submitButtonPressed:" destination="dlN-MI-cle" eventType="touchUpInside" id="Buy-iY-dYC"/>
                                 </connections>

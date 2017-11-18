@@ -20,13 +20,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func getRepos() {
-        repoFeed.feedRequest("test") { (success, error) in
+        repoFeed.feedRequest() { (success, error) in
             if success {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -60,7 +55,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let selectedRow = repoFeed.repo[indexPath.row]
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "RepoVC") as! RepoViewController
         vc.repo = selectedRow
-    //    vc.navigationItem.title = assignmentTitle
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

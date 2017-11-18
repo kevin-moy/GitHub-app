@@ -12,11 +12,11 @@ class ApiManager {
     
     static let sharedInstance = ApiManager()
     
-    func getRepos(_ accessToken: String!, completionHandler:@escaping (_ repos: [RepoObject]?, _ error: String?) -> Void) {
+    func getRepos(completionHandler:@escaping (_ repos: [RepoObject]?, _ error: String?) -> Void) {
         
         let group = DispatchGroup()
         var repoArray = [RepoObject]()
-        let url = URL(string: "https://api.github.com/repositories?since=41")!
+        let url = URL(string: Github.publicRepos)!
         
         group.enter()
         let task = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error -> Void in
@@ -227,29 +227,71 @@ class ApiManager {
 
     func createIssue(_ issueURL: URL!, _ issueTitle: String!, issueBody: String!, completionHandler:@escaping (_ succeed: Bool, _ error: String?) -> Void) {
         
+        var statusCode: Int! = 0
+        let group = DispatchGroup()
+        let defaults = UserDefaults.standard
         let url = issueURL!
         var request = URLRequest(url: url)
+
+        if defaults.string(forKey: defaultKeys.accessCode) != nil {
+            request.setValue("token \(defaults.string(forKey: defaultKeys.accessCode)!)", forHTTPHeaderField: "Authorization")
+        }
+       
+        let json: [String: Any] = ["title": issueTitle,
+                                   "body": issueBody]
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        request.httpBody = jsonData
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-         let postString = "title=\(issueTitle!)&body=\(issueBody!)"
-        //let postString = "title=test&body=body"
+        group.enter()
         
-        request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 completionHandler(false, String(describing: error))
                 return
             }
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
+            if let httpStatus = response as? HTTPURLResponse {           // check for http errors
+                statusCode = httpStatus.statusCode
             }
             
             let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(String(describing: responseString))")
+            completionHandler(true, String(statusCode))
         }
         task.resume()
-        completionHandler(true, nil)
+        group.notify(queue: .main) {
+                completionHandler(true, String(statusCode))
+        }
     }
-    
+    func getAccessToken(_ code: String!, completionHandler:@escaping (_ succeed: Bool, _ code: String, _ error: String?) -> Void) {
+        
+        let url = URL(string:"https://github.com/login/oauth/access_token")
+        var request = URLRequest(url: url!)
+        var accessCode: String = ""
+        let group = DispatchGroup()
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        let postString = "client_id=\(Github.clientID)&client_secret=\(Github.clientSecret)&code=\(code!)"
+        request.httpBody = postString.data(using: .utf8)
+        group.enter()
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completionHandler(false, "None", String(describing: error))
+                return
+            }
+            let responseString = String(data: data, encoding: .utf8)
+        
+            if let upperRange = responseString?.range(of: "access_token=") {
+                let upperString = String(describing: responseString!.suffix(from: upperRange.upperBound))
+                if let lowerRange = upperString.range(of: "&scope") {
+                    accessCode = String(upperString[upperString.startIndex..<lowerRange.lowerBound])
+                    completionHandler(true, accessCode, nil)
+                }
+            }
+        }
+        task.resume()
+        group.notify(queue: .main) {
+            completionHandler(true, accessCode, nil)
+        }
+    }
+
 }

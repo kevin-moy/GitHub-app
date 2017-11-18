@@ -10,9 +10,8 @@ import Foundation
 
 class RepoViewModel {
     var repo = [RepoObject]()
-    // KEVIN CHANGE ACCESSTOKEN
-    func feedRequest(_ accessToken: String!, completionHandler:@escaping (_ succeed: Bool, _ error: String?) -> Void) {
-        ApiManager.sharedInstance.getRepos(accessToken!) { (repos, error) in
+    func feedRequest(completionHandler:@escaping (_ succeed: Bool, _ error: String?) -> Void) {
+        ApiManager.sharedInstance.getRepos() { (repos, error) in
             if let fetchedRepos = repos {
                 self.repo.append(contentsOf: fetchedRepos)
                 completionHandler(true, nil)
