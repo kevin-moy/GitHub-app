@@ -250,11 +250,10 @@ class ApiManager {
                 completionHandler(false, String(describing: error))
                 return
             }
-            if let httpStatus = response as? HTTPURLResponse {           // check for http errors
+            if let httpStatus = response as? HTTPURLResponse {
                 statusCode = httpStatus.statusCode
             }
             
-            let responseString = String(data: data, encoding: .utf8)
             completionHandler(true, String(statusCode))
         }
         task.resume()
