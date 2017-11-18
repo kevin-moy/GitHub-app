@@ -44,11 +44,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController.addAction(okayAction)
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    // MARK: - Table view data source
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RepoCell
         cell.setupCell(repo: self.repoFeed.repo[indexPath.row])
         return cell
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repoFeed.repo.count
     }

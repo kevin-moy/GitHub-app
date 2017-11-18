@@ -9,13 +9,13 @@
 import Foundation
 
 class PullRequestsViewModel {
-    var repo = [RepoObject]()
+    var prs = [PullRequestsObject]()
     
-    func feedRequest(_ accessToken: String!, completionHandler:@escaping (_ succeed: Bool, _ total: Int?, _ error: String?) -> Void) {
-        ApiManager.sharedInstance.getRepos(accessToken!) { (repos, error) in
-            if let fetchedRepos = repos {
-                self.repo.append(contentsOf: fetchedRepos)
-                completionHandler(true, fetchedRepos.count, nil)
+    func prRequest(_ url: URL!, completionHandler:@escaping (_ succeed: Bool, _ total: Int?, _ error: String?) -> Void) {
+        ApiManager.sharedInstance.getPullRequests(url!) { (prs, error) in
+            if let fetchedPRs = prs {
+                self.prs.append(contentsOf: fetchedPRs)
+                completionHandler(true, fetchedPRs.count, nil)
             }
             else {
                 completionHandler(false, nil, error)
