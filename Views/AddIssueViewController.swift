@@ -34,9 +34,11 @@ class AddIssueViewController: UIViewController, UITextViewDelegate, WKNavigation
             self.present(alertController, animated: true, completion: nil)
             return
         }
-        // Can use my repo URL to test creating issues. Replace issueURL with tempURL
-        //  let tempURL = URL(string: "https://api.github.com/repos/kevin-moy/Jumping_Bird/issues")
-        ApiManager.sharedInstance.createIssue(issueURL, issueTitle, issueBody: issueBody) { (success, error) in
+        
+        //NOTE: Can use my repo URL to test creating issues. Replace issueURL with tempURL
+          let tempURL = URL(string: "https://api.github.com/repos/kevin-moy/Jumping_Bird/issues")
+        
+        ApiManager.sharedInstance.createIssue(tempURL, issueTitle, issueBody: issueBody) { (success, error) in
             if Int(error!) == 404 {
                 let alertController = UIAlertController.init(title: "Error", message: "You need to login ", preferredStyle: .alert)
                 let okayAction = UIAlertAction.init(title: "Login", style: .default, handler: {(alert: UIAlertAction!) in
@@ -53,8 +55,15 @@ class AddIssueViewController: UIViewController, UITextViewDelegate, WKNavigation
                 self.present(alertController, animated: true, completion: nil)
                 return
             }
-            if success && Int(error!) == 201 {
+            else if success && Int(error!) == 201 {
                 let alertController = UIAlertController.init(title: "Success", message: "Created issue", preferredStyle: .alert)
+                let okayAction = UIAlertAction.init(title: "Okay", style: .cancel, handler: nil)
+                alertController.addAction(okayAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            else {
+                let alertController = UIAlertController.init(title: "Error", message: "Code \(String(describing: error))", preferredStyle: .alert)
                 let okayAction = UIAlertAction.init(title: "Okay", style: .cancel, handler: nil)
                 alertController.addAction(okayAction)
                 self.present(alertController, animated: true, completion: nil)

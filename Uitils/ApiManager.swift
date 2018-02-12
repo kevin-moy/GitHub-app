@@ -14,11 +14,11 @@ class ApiManager {
     
     func getRepos(completionHandler:@escaping (_ repos: [RepoObject]?, _ error: String?) -> Void) {
         
-        let group = DispatchGroup()
+   //     let group = DispatchGroup()
         var repoArray = [RepoObject]()
         let url = URL(string: Github.publicRepos)!
         
-        group.enter()
+  //      group.enter()
         let task = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error -> Void in
             
             guard error == nil else {
@@ -50,9 +50,9 @@ class ApiManager {
             }
         })
         task.resume()
-        group.notify(queue: .main) {
+    //    group.notify(queue: .main) {
             completionHandler(repoArray, nil)
-        }
+      //  }
     }
     
     func getBranches(_ branchURL: URL!, completionHandler:@escaping (_ branches: [BranchObject]?, _ error: String?) -> Void) {
@@ -224,7 +224,8 @@ class ApiManager {
             completionHandler(issuesArray, nil)
         }
     }
-
+    
+    
     func createIssue(_ issueURL: URL!, _ issueTitle: String!, issueBody: String!, completionHandler:@escaping (_ succeed: Bool, _ error: String?) -> Void) {
         
         var statusCode: Int! = 0
@@ -246,7 +247,7 @@ class ApiManager {
         group.enter()
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
+            guard let _ = data, error == nil else {
                 completionHandler(false, String(describing: error))
                 return
             }
