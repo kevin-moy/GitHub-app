@@ -14,11 +14,9 @@ class ApiManager {
     
     func getRepos(completionHandler:@escaping (_ repos: [RepoObject]?, _ error: String?) -> Void) {
         
-   //     let group = DispatchGroup()
         var repoArray = [RepoObject]()
         let url = URL(string: Github.publicRepos)!
         
-  //      group.enter()
         let task = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error -> Void in
             
             guard error == nil else {
@@ -50,9 +48,7 @@ class ApiManager {
             }
         })
         task.resume()
-    //    group.notify(queue: .main) {
             completionHandler(repoArray, nil)
-      //  }
     }
     
     func getBranches(_ branchURL: URL!, completionHandler:@escaping (_ branches: [BranchObject]?, _ error: String?) -> Void) {
